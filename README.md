@@ -14,6 +14,7 @@ No tab-switching. No copy-paste dance. The model comes to you.
 ![Backend](https://img.shields.io/badge/backend-Python-3776AB?logo=python&logoColor=white)
 ![Models via OpenRouter](https://img.shields.io/badge/models-OpenRouter-6E56CF)
 ![Local-first](https://img.shields.io/badge/runs-100%25%20local-2ea44f)
+![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial-blue)
 
 </div>
 
@@ -33,6 +34,7 @@ ImpressionistLLM is a native macOS menu-bar app that turns **any** application i
 - [Privacy &amp; security](#privacy--security)
 - [Documentation](#documentation)
 - [Project layout](#project-layout)
+- [License](#license)
 
 </details>
 
@@ -155,3 +157,13 @@ Drop in a file, assign a hotkey, and it's live. The bundled prompts lean toward 
 ```
 
 > The compiled `.app` runs from the repo root and reads `config/`, `lib/core/`, `prompts/`, and `LoadingScreen.png` as siblings — those stay put by design.
+
+## License
+
+Released under the [PolyForm Noncommercial License 1.0.0](LICENSE).
+
+- **Free for noncommercial use** — personal projects, study, and research are all welcome.
+- **Collaboration is encouraged** — contributions that help improve and scale the app are warmly received.
+- **Commercial use needs a license** — companies and for-profit products building on this should reach out first to arrange commercial terms.
+
+For commercial licensing or partnership inquiries, contact **andrew.hatkoff@radai.com**.
