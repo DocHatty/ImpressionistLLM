@@ -166,4 +166,4 @@ Released under the [PolyForm Noncommercial License 1.0.0](LICENSE).
 - **Collaboration is encouraged** — contributions that help improve and scale the app are warmly received.
 - **Commercial use needs a license** — companies and for-profit products building on this should reach out first to arrange commercial terms.
 
-For commercial licensing or partnership inquiries, contact **andrew.hatkoff@radai.com**.
+For commercial licensing or partnership inquiries, contact **Andrew.Hatkoff@UHKC.org**.
