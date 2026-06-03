@@ -1,107 +1,117 @@
+<div align="center">
+
+<img src="LoadingScreen.png" alt="ImpressionistLLM" width="280" />
+
 # ImpressionistLLM
 
 **An invisible AI layer that sits on top of every app on your Mac.**
 
-Select text anywhere, hit a hotkey, and the rewritten / answered / analyzed result is pasted back in place — without ever leaving the window you're in. No copy-pasting into a chat tab. No window switching. No "open the AI app" friction. The model meets you where you already work: your EHR, your editor, your inbox, your browser.
+Select text anywhere → press a hotkey → the result is pasted back in place.
+No tab-switching. No copy-paste dance. The model comes to you.
 
-ImpressionistLLM is a native macOS menu-bar app (Swift + AppKit) backed by a tiny local Python server that proxies to [OpenRouter](https://openrouter.ai), so you can route any prompt to any model — GPT, Claude, Gemini, and hundreds more — from one place.
+![Platform](https://img.shields.io/badge/platform-macOS-000000?logo=apple&logoColor=white)
+![Built with Swift](https://img.shields.io/badge/built%20with-Swift%20%2B%20AppKit-FA7343?logo=swift&logoColor=white)
+![Backend](https://img.shields.io/badge/backend-Python-3776AB?logo=python&logoColor=white)
+![Models via OpenRouter](https://img.shields.io/badge/models-OpenRouter-6E56CF)
+![Local-first](https://img.shields.io/badge/runs-100%25%20local-2ea44f)
+
+</div>
 
 ---
 
-## Why an *invisible* wrapper?
+ImpressionistLLM is a native macOS menu-bar app that turns **any** application into an AI-powered one. It runs at the OS level — global hotkeys, the clipboard, and the accessibility API — so it works inside your EHR, editor, inbox, browser, or terminal without a single plugin. A tiny local Python server proxies your requests to [OpenRouter](https://openrouter.ai), giving you GPT, Claude, Gemini, and hundreds of other models from one keystroke.
 
-Most AI tools make you go *to* them: switch to a browser tab, paste your text, copy the answer, switch back, paste again. That context-switch tax is paid hundreds of times a day. ImpressionistLLM inverts it.
+<details>
+<summary><b>Table of contents</b></summary>
+
+- [Why invisible?](#why-invisible)
+- [Features](#features)
+- [How it works](#how-it-works)
+- [Quick start](#quick-start)
+- [Hotkeys](#hotkeys)
+- [Writing prompts](#writing-prompts)
+- [Privacy &amp; security](#privacy--security)
+- [Documentation](#documentation)
+- [Project layout](#project-layout)
+
+</details>
+
+## Why invisible?
+
+Every other AI tool makes you go *to* it. ImpressionistLLM comes *to you*. That difference is paid back hundreds of times a day.
 
 | The usual way | ImpressionistLLM |
 | --- | --- |
-| Switch to ChatGPT tab | Stay in the app you're already using |
-| Paste your text + a prompt | Select text, press one hotkey |
-| Wait, copy the answer | Result is pasted back in place automatically |
-| Switch back, paste | You never left |
-| One model, one vendor | Any model on OpenRouter, per-prompt |
+| Switch to a ChatGPT tab | Stay in the app you're already in |
+| Paste your text and a prompt | Select text, press one hotkey |
+| Wait, then copy the answer | The answer is pasted back in place |
+| Switch back, paste again | You never left |
+| Locked to one vendor's model | Any model on OpenRouter, per prompt |
 
-It works **on top of everything** — radiology dictation systems, VS Code, Notes, Mail, Slack, Word, a PDF viewer, a terminal — because it operates at the OS level (global hotkeys + the clipboard + the accessibility API), not as a plugin for any single app.
+## Features
 
----
-
-## Key benefits
-
-- **Zero context switching.** Your hands never leave the keyboard and your eyes never leave the document. Select → hotkey → done.
-- **Works in any app.** No integrations to install. If you can select text in it, ImpressionistLLM can act on it.
-- **One hotkey per prompt.** Bind your most-used prompts (rewrite, summarize, fix grammar, translate, draft a reply, restructure a report) to their own shortcuts. A fuzzy-search floating menu (default: <kbd>`</kbd> backtick) lists everything else.
-- **Any model, per prompt.** Each prompt declares its own model on line 1, so you can send quick edits to a fast cheap model and hard reasoning to a frontier one.
-- **Vision built in.** Press the screenshot hotkey, drag a box across *any* part of *any* screen (multi-monitor aware), and the captured image is analyzed by a vision model — great for charts, scanned docs, error dialogs, or UI you can't select.
-- **Rolling context.** Stack several selections into a shared context buffer that's injected into your next prompt, then auto-expires after 5 minutes so it never leaks into unrelated requests.
-- **Edit-before-paste & chat mode.** Prompts can open a review/edit window before pasting, or spin up a full in-app chat session for back-and-forth.
-- **Local-first & private.** The Python server runs on `127.0.0.1` behind a per-session secret. Your API key lives only on your machine. Provider routing defaults refuse providers that train on your prompts (configurable for PHI / Zero-Data-Retention).
-- **Invisible UI.** A menu-bar icon, a translucent processing HUD, and overlay windows that render at screen-saver level — nothing steals focus from your real work.
-
----
+- **Zero context switching** — hands stay on the keyboard, eyes stay on the document.
+- **Works in any app** — if you can select text in it, you can run a prompt on it. No integrations.
+- **One hotkey per prompt** — bind your go-to prompts to shortcuts; a fuzzy-search floating menu (<kbd>`</kbd>) holds the rest.
+- **Any model, per prompt** — each prompt names its own model, so cheap-and-fast and frontier-reasoning coexist.
+- **Built-in vision** — drag a box across any screen (multi-monitor aware) and a vision model reads it: charts, scans, error dialogs, un-selectable UI.
+- **Rolling context** — stack multiple selections into a shared buffer that's injected into your next prompt, then auto-expires after 5 minutes.
+- **Edit-before-paste & chat mode** — review output before it lands, or open a full in-app chat session.
+- **Local-first & private** — server binds to `127.0.0.1` behind a per-session secret; your API key never leaves the machine.
 
 ## How it works
 
 ```mermaid
 graph LR
-    A[You select text<br/>in any app] -->|Global hotkey| B(HotkeyManager<br/>CGEventTap)
-    B --> C(LLMService)
-    C -->|localhost + secret| D[Local Python Server]
-    D -->|OpenRouter API| E[Any LLM]
+    A["You select text<br/>in any app"] -->|Global hotkey| B["HotkeyManager<br/>(CGEventTap)"]
+    B --> C["LLMService"]
+    C -->|localhost + secret| D["Local Python server"]
+    D -->|OpenRouter API| E["Any LLM"]
     E --> D --> C
     C -->|pastes result<br/>back in place| A
 ```
 
-1. A global **event tap** intercepts your hotkey no matter which app is focused.
-2. The selected text is grabbed via the clipboard, wrapped with the prompt's system instructions (and any active context), and sent to the **local Python server**.
+1. A global **event tap** catches your hotkey regardless of the focused app.
+2. The selection is captured, wrapped with the prompt's system instructions (plus any active context), and sent to the **local server**.
 3. The server proxies to **OpenRouter** using the model the prompt requested.
-4. The response is **pasted back** into the original app — or opened in an edit window / chat session, depending on the prompt's settings.
+4. The response is **pasted back** in place — or opened in an edit window or chat session, per the prompt's settings.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full breakdown.
-
----
+Full breakdown in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Quick start
 
-> Requires macOS, the Xcode command-line tools (for `swiftc`), and a system `python3`.
+> **Requires** macOS, Xcode command-line tools (`swiftc`), and a system `python3`.
 
-1. **Get an OpenRouter API key** at <https://openrouter.ai/keys>.
-2. **Add your key.** Copy the template and drop your key in:
-   ```bash
-   cp config/settings.ini.example config/settings.ini
-   # then edit config/settings.ini and set APIKey=sk-or-v1-...
-   ```
-   (Or export `OPENROUTER_API_KEY` in your shell — it takes priority.)
-3. **Build the app:**
-   ```bash
-   ./build_app.sh
-   ```
-4. **Launch it:**
-   ```bash
-   open ImpressionistLLM.app
-   ```
-   On first run it bootstraps a local Python virtualenv (~15s) and shows a splash screen.
-5. **Grant Accessibility permission** when prompted (System Settings → Privacy & Security → Accessibility). This lets the app read your selection and paste results.
+```bash
+# 1. Add your OpenRouter key (get one at https://openrouter.ai/keys)
+cp config/settings.ini.example config/settings.ini
+#    then edit config/settings.ini → APIKey=sk-or-v1-...
+#    (or export OPENROUTER_API_KEY — it takes priority)
 
-Now select some text in any app and press <kbd>`</kbd> to open the floating prompt menu.
+# 2. Build
+./build_app.sh
 
----
+# 3. Launch (first run bootstraps a local Python venv, ~15s)
+open ImpressionistLLM.app
+```
 
-## Default hotkeys
+Grant **Accessibility** permission when prompted (System Settings → Privacy & Security → Accessibility) so the app can read your selection and paste results. Then select text in any app and press <kbd>`</kbd>.
 
-| Action | Default shortcut | What it does |
+## Hotkeys
+
+| Action | Default | What it does |
 | --- | --- | --- |
-| Floating prompt menu | <kbd>`</kbd> (backtick) | Fuzzy-search and run any prompt |
-| Screenshot → vision | <kbd>⌃</kbd>+<kbd>G</kbd> | Drag a box on any screen; analyze with a vision model |
+| Floating prompt menu | <kbd>`</kbd> | Fuzzy-search and run any prompt |
+| Screenshot → vision | <kbd>⌃</kbd><kbd>G</kbd> | Drag a box on any screen; analyze with a vision model |
 | Cancel | configurable | Abort the in-flight request |
 | Clear context | configurable | Empty the rolling context buffer |
-| Open context manager | configurable | Manage stacked context in a web view |
+| Context manager | configurable | Manage stacked context in a web view |
 
-All shortcuts are remappable in the in-app **Hotkey Settings** window, and per-prompt hotkeys can be assigned to any prompt.
+Everything is remappable in the in-app **Hotkey Settings** window, including a dedicated shortcut per prompt.
 
----
+## Writing prompts
 
-## Customizing prompts
-
-Prompts are plain `.txt` files in [`prompts/`](prompts/). The first line is the model ID, then a blank line, then the system prompt:
+Prompts are plain `.txt` files in [`prompts/`](prompts/). Line 1 is the model ID, then a blank line, then the system prompt:
 
 ```text
 openai/gpt-5.5
@@ -109,9 +119,14 @@ openai/gpt-5.5
 Rewrite the selected text to be clear and concise. Preserve meaning.
 ```
 
-Add a file, give it a hotkey in settings, and it's live. The bundled prompts skew toward radiology reporting (the project's origin) but the mechanism is fully general — see [`prompts/README.md`](prompts/README.md) for the format and optional metadata.
+Drop in a file, assign a hotkey, and it's live. The bundled prompts lean toward radiology reporting (the project's origin), but the mechanism is fully general — see [`prompts/README.md`](prompts/README.md).
 
----
+## Privacy & security
+
+- **Your key stays local** — it lives in `config/settings.ini` (git-ignored) or an env var, never in the repo.
+- **The server is loopback-only** — bound to `127.0.0.1` and gated by a per-session `X-API-Secret` header.
+- **Routing refuses training providers** by default; enable Zero-Data-Retention (`ProviderZDR=true`) for PHI workloads.
+- **Secrets are git-ignored** — `config/settings.ini`, `cert/*.key`, `cert/*.p12`, `.env`, and `logs/` are excluded by [`.gitignore`](.gitignore). Never commit a real key.
 
 ## Documentation
 
@@ -123,26 +138,15 @@ Add a file, give it a hotkey in settings, and it's live. The bundled prompts ske
 | [`prompts/README.md`](prompts/README.md) | Prompt file format and authoring |
 | [`config/README.md`](config/README.md) | Configuration reference |
 
----
-
 ## Project layout
 
 ```text
 .
-├── *.swift                  # Native macOS app (menu bar, hotkeys, overlays, HUD)
-├── build_app.sh             # Compiles, bundles, and code-signs ImpressionistLLM.app
-├── config/                  # settings.ini.example, hotkey bindings (your key stays local)
-├── lib/core/                # Local Python server + OpenRouter client
-├── prompts/                 # Your prompt library (.txt) + prompt-manager web assets
-├── scripts/                 # Model probes and validation helpers
-└── docs/                    # Architecture, operations, structure
+├── *.swift          # Native macOS app: menu bar, hotkeys, overlays, HUD
+├── build_app.sh     # Compiles, bundles, and code-signs ImpressionistLLM.app
+├── config/          # settings.ini.example + hotkey bindings (your key stays local)
+├── lib/core/        # Local Python server + OpenRouter client
+├── prompts/         # Your prompt library (.txt) + prompt-manager web assets
+├── scripts/         # Model probes and validation helpers
+└── docs/            # Architecture, operations, structure
 ```
-
----
-
-## Privacy & security
-
-- **Your API key never leaves your machine.** It lives in `config/settings.ini` (git-ignored) or an env var.
-- **The local server binds to `127.0.0.1`** and requires a per-session `X-API-Secret` header — other processes can't talk to it.
-- **Provider routing** defaults to refusing providers that train on prompts. For PHI, flip on Zero-Data-Retention mode in `config/settings.ini` (`ProviderZDR=true`).
-- **Secrets are git-ignored.** `config/settings.ini`, `cert/*.key`, `cert/*.p12`, `.env`, and `logs/` are excluded by [`.gitignore`](.gitignore). Never commit real keys.
