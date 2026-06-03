@@ -1,0 +1,11 @@
+# Normalize text line endings on commit; let git infer text vs binary.
+* text=auto
+
+# Keep shell scripts LF so they stay executable across platforms.
+*.sh text eol=lf
+
+# Treat these as binary (no diffing, no EOL conversion).
+*.png binary
+*.ico binary
+*.p12 binary
+*.crt binary
