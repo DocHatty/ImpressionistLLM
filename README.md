@@ -128,20 +128,41 @@ Full breakdown in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 > **Requires** macOS, Xcode command&#8209;line tools (`swiftc`), and a system `python3`.
 
-```bash
-# 1. Add your OpenRouter key (get one at https://openrouter.ai/keys)
-cp config/settings.ini.example config/settings.ini
-#    then set APIKey=sk-or-v1-... inside config/settings.ini
-#    (or export OPENROUTER_API_KEY, which takes priority)
+#### 1. Get an OpenRouter API key
 
-# 2. Build
-./build_app.sh
+ImpressionistLLM sends every request through [OpenRouter](https://openrouter.ai), a single gateway to GPT, Claude, Gemini, and hundreds of other models. One key unlocks every model a prompt can name, so you never sign up with each vendor separately.
 
-# 3. Launch (first run bootstraps a local Python venv, about 15s)
-open ImpressionistLLM.app
+1. Create a free account at **[openrouter.ai/keys](https://openrouter.ai/keys)**.
+2. Click **Create Key** and copy it. The key looks like `sk-or-v1-...`.
+
+#### 2. Add your key
+
+The repo ships with [`config/settings.ini`](config/settings.ini) ready to go. Open it and replace the placeholder with the key you just copied:
+
+```ini
+[API]
+APIKey=YOUR_API_KEY_HERE      ; <-- paste your sk-or-v1-... key here
+DefaultModel=openai/gpt-5.5
 ```
 
+Prefer not to edit the file? Export the key instead, which takes priority:
+
+```bash
+export OPENROUTER_API_KEY=sk-or-v1-your-key
+```
+
+#### 3. Build and launch
+
+```bash
+./build_app.sh              # compiles, bundles, and code-signs the app
+open ImpressionistLLM.app   # first run bootstraps a local Python venv, about 15s
+```
+
+#### 4. Grant permission and go
+
 Grant **Accessibility** permission when prompted (System Settings &rarr; Privacy &amp; Security &rarr; Accessibility) so the app can read your selection and paste results. Then select text in any app and press <kbd>`</kbd>.
+
+> **Note for contributors:** the committed `config/settings.ini` contains only a placeholder. Never commit a real key. To keep your local key from being staged, run `git update-index --skip-worktree config/settings.ini`.
 
 ## Hotkeys
 
@@ -173,10 +194,10 @@ Drop in a file, assign a hotkey, and it is live. The bundled prompts lean toward
 
 ## Privacy &amp; security
 
-- **Your key stays local.** It lives in `config/settings.ini` (git&#8209;ignored) or an env var, never in the repo.
+- **Your key stays local.** `config/settings.ini` ships with a placeholder only. Your real key lives on your machine and is never sent anywhere except OpenRouter.
 - **The server is loopback only.** It is bound to `127.0.0.1` and gated by a per&#8209;session `X-API-Secret` header.
 - **Routing refuses training providers** by default. Enable Zero&#8209;Data&#8209;Retention (`ProviderZDR=true`) for PHI workloads.
-- **Secrets are git&#8209;ignored.** `config/settings.ini`, `cert/*.key`, `cert/*.p12`, `.env`, and `logs/` are excluded by [`.gitignore`](.gitignore). Never commit a real key.
+- **Secrets are git&#8209;ignored.** `cert/*.key`, `cert/*.p12`, `.env`, and `logs/` are excluded by [`.gitignore`](.gitignore). The committed `config/settings.ini` carries a placeholder key, never a real one.
 
 ## Documentation
 

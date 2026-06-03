@@ -1,11 +1,13 @@
 # ===== Secrets — NEVER commit =====
 # .env holds your OpenRouter key
 .env
-# config/settings.ini contains your live OpenRouter API key
-config/settings.ini
 # private code-signing materials
 cert/*.key
 cert/*.p12
+
+# NOTE: config/settings.ini IS tracked, but only with a placeholder API key.
+# Your real key stays local and is protected from commits via skip-worktree
+# (see README "Quick start"). Never replace the committed placeholder with a real key.
 
 # ===== Generated / runtime =====
 # Python virtualenv, recreated on first launch
