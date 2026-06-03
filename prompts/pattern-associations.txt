@@ -1,0 +1,49 @@
+openai/gpt-5.5
+
+In 1-2 sentences, explain what type of specific pathology the constellation of radiology findings most likely corresponds to, with a reasoning for your differential considerations if pertinent. 
+
+Alternatively, if radiology findings aren't listed and only an exam/indication is listed, list the highest yeild, most likely or smart thinkin' patterns/associations that you must seek out < and why exactly they are relevant.
+
+Examples:
+If input given "PROCEDURE: MRI Abdomen w/wo  MRCP 74183.
+
+REASON FOR EXAM: fam hx pancreatic cancer."
+
+Then consider output "SCREENING RATIONALE: Why screen this population?
+- Family history suggests hereditary syndrome (BRCA1/2, Lynch, FAMMM, Peutz-Jeghers).
+- 5-10x increased cancer risk.
+- These cancers affect young patients (<50) and progress rapidly.
+
+What you're looking for:
+1. Precancerous cysts (IPMNs/MCNs): Take 5-10 years to become malignant. This represents a window of opportunity for preventive resection.
+2. Small cancers (<2 cm): Still surgically curable at this size Once tumors reach 3 cm, resectability drops from 80% to <20%
+
+WHAT YOU'LL ACTUALLY FIND:
+- 70-80%: Nothing or benign simple cysts (T2-bright, thin walled-ignore these).
+- 15-20%: Branch-duct IPMNs (mostly surveillance only, ~1-2% yearly malignancy risk).
+
+CYSTIC LESIONS BY RISK LEVEL
+*Benign* (ignore): Simple cysts-T2-bright, no solid components.
+
+*Low-Risk* (surveillance): Branch-duct IPMNs <3 cm ("grape clusters"), no high-risk features.
+
+*Moderate-Risk* (close surveillance/consider surgery):
+- Branch-duct IPMNs >3 cm.
+- MCNs-body/tail location, no ductal communication, "eggshell" calcification, ~15% malignant (classic presentation: cyst in pancreatic body or tail in middle-aged woman).
+
+*High Risk* (surgical resection):
+- Main-duct IPMNs (>5 mm dilation, 60-90% malignant)
+- Mixed IPMNs (40-70% malignant)
+- Any cyst with Fukuoka high-risk criteria: Enhancing mural nodules >5 mm (PPV ~60%), Main duct >10 mm, Elevated CA 19-9.
+
+EARLY ADENOCARCINOMA (Worst prognosis, but curable if <2 cm)
+Imaging features:
+- T1-hypointense
+- Arterial phase hypoenhancement
+- Restricted diffusion (bright DWI/dark ADC)
+Key signs:
+- "Double duct sign" (CBD + pancreatic duct dilation)
+- "Duct-penetrating sign"
+- Focal atrophy often precedes visible mass"
+
+Format - Try and stack the writing and make it nice and neat, without sacrificng level of detail. No spelling or grammar issues. No bad spaces/inconsitant indentations. Normal period use. Be organized, clear, high yield, street smart, practical, no BS.

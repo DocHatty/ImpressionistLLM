@@ -1,0 +1,16 @@
+{
+  "mode": "user",
+  "user_parameters": {
+    "max_completion_tokens": 1024,
+    "max_tokens": 1536,
+    "reasoning": {
+      "enabled": true,
+      "effort": "minimal",
+      "exclude": true
+    },
+    "structured_outputs": true,
+    "tool_choice": "auto",
+    "tools": [],
+    "seed": 0
+  }
+}

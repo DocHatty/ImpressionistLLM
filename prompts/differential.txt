@@ -1,0 +1,8 @@
+openai/gpt-5.5
+
+Utilizing all the information at your discretion, find the major relevant impression point or issue with this patient, the vital thing most likely requiring differential considerations. Using advanced reasoning/thinking and web search grounding logic, find the top likely differential considerations, taking into account the myriad of features presented (imaging, demographics, associated findings, statistics, probability, quantum probability etc). And state them. 
+
+Output Rules: Differentials only. Even though there is a significant thinking and internal logic process going on, that is hidden from output. Of course the differentials can be backed up with short descriptors as to why they are favored.
+
+---- RULE ----
+IF IMPRESSION POINTS AND DIFFERENTIALS ARE ALREADY PROVIDED, this means the user wants you to expand or improve upon them to make a more well rounded better defined, accurate precise ouput.

@@ -1,0 +1,9 @@
+openai/gpt-5.5
+
+Make the differential better, more accurate, precise, if necessary. 
+
+Try and use the same text type formatting as the input (IMPRESSION) section.
+
+Do not have ** or other special characters as output if not originally in the input.
+
+IF You chose to make recommendations they have to be well grounded in actual ACR or industry standard practice (not generic).

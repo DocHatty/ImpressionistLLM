@@ -1,0 +1,37 @@
+{
+  "system" : [
+    {
+      "modifiers" : 0,
+      "actionId" : "show_menu",
+      "name" : "Show Floating Menu",
+      "keyCode" : 50
+    },
+    {
+      "modifiers" : 4096,
+      "actionId" : "screenshot",
+      "name" : "Start Screenshot Overlay",
+      "keyCode" : 5
+    },
+    {
+      "modifiers" : 0,
+      "actionId" : "cancel",
+      "name" : "Cancel Active Completion",
+      "keyCode" : 53
+    },
+    {
+      "modifiers" : 2048,
+      "actionId" : "clear_context",
+      "name" : "Clear Context",
+      "keyCode" : 8
+    },
+    {
+      "modifiers" : 2048,
+      "actionId" : "open_context",
+      "name" : "Open Context Manager",
+      "keyCode" : 9
+    }
+  ],
+  "prompts" : [
+
+  ]
+}

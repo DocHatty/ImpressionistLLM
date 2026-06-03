@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ImpressionistLLM — Debug Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #060913;
+    --panel: rgba(13, 20, 38, 0.7);
+    --panel-2: rgba(26, 36, 60, 0.5);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --fg: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.35);
+    --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    --ok: #10b981;
+    --ok-glow: rgba(16, 185, 129, 0.35);
+    --warn: #f59e0b;
+    --warn-glow: rgba(245, 158, 11, 0.35);
+    --err: #ef4444;
+    --err-glow: rgba(239, 68, 68, 0.35);
+    --crit: #f87171;
+    --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    --sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  
+  * { box-sizing: border-box; }
+  
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+  
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  header {
+    flex: 0 0 auto;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .logo-icon {
+    font-size: 16px;
+    filter: drop-shadow(0 0 6px var(--accent));
+  }
+  
+  header h1 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--fg);
+    letter-spacing: -0.2px;
+  }
+  
+  header .spacer { flex: 1; }
+  
+  header .status {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+  
+  header .status.on {
+    color: var(--ok);
+    border-color: rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.05);
+  }
+  
+  header .status.off {
+    color: var(--warn);
+    border-color: rgba(245, 158, 11, 0.2);
+    background: rgba(245, 158, 11, 0.05);
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 0 0 var(--pulse-glow, var(--accent-glow)); }
+    70% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
+    100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+  }
+  
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .status.on .status-dot {
+    background: var(--ok);
+    --pulse-glow: var(--ok-glow);
+    animation: pulse 2s infinite;
+  }
+  
+  .status.off .status-dot {
+    background: var(--warn);
+    --pulse-glow: var(--warn-glow);
+    animation: pulse 2s infinite;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  button {
+    background: var(--panel-2);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+  
+  button:hover {
+    border-color: var(--border-hover);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  button:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  
+  button.primary {
+    background: var(--accent-gradient);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+  
+  button.primary:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+  
+  button.danger {
+    color: #fff;
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    border-color: transparent;
+    box-shadow: 0 2px 8px var(--err-glow);
+  }
+  
+  button.danger:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 4px 16px var(--err-glow);
+  }
+  
+  input[type=text] {
+    background: var(--panel-2);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: var(--sans);
+    font-size: 12px;
+    min-width: 120px;
+    transition: all 0.2s ease;
+  }
+  
+  input[type=text]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  .toolbar2 {
+    flex: 0 0 auto;
+    background: rgba(10, 14, 26, 0.5);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 12px;
+    backdrop-filter: blur(12px);
+    z-index: 9;
+  }
+  
+  .toolbar2 label {
+    color: var(--fg);
+    font-weight: 500;
+    user-select: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  
+  .toolbar2 label:hover {
+    border-color: var(--border-hover);
+    background: rgba(255,255,255,0.05);
+  }
+  
+  .toolbar2 input[type=checkbox] {
+    accent-color: var(--accent);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    margin: 0;
+  }
+  
+  #list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background: var(--bg);
+    padding: 8px 0;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .row {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 8px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    white-space: pre-wrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  
+  .row:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .row.expanded {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom-color: var(--border-hover);
+  }
+  
+  .row .caret {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 9px;
+    color: var(--muted);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    vertical-align: middle;
+  }
+  
+  .row.expanded .caret {
+    transform: rotate(90deg);
+    color: var(--accent);
+  }
+  
+  .row .ts {
+    color: #475569;
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  
+  .row .kind {
+    display: inline-block;
+    min-width: 200px;
+    color: #60a5fa;
+    font-weight: 500;
+    letter-spacing: -0.1px;
+    vertical-align: middle;
+  }
+  
+  .row.level-warning .kind { color: var(--warn); }
+  .row.level-error .kind { color: var(--err); }
+  .row.level-debug .kind { color: var(--muted); }
+  
+  .row .summary {
+    color: var(--fg);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  
+  .row .json {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: rgba(5, 7, 15, 0.85);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--fg);
+    font-size: 11px;
+    line-height: 1.6;
+    white-space: pre;
+    overflow-x: auto;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .row.expanded .json { display: block; }
+  
+  /* JSON syntax highlighting */
+  .json-key { color: #f87171; font-weight: 500; }
+  .json-string { color: #34d399; }
+  .json-number { color: #fbbf24; }
+  .json-boolean { color: #60a5fa; font-weight: 600; }
+  .json-null { color: #94a3b8; font-style: italic; }
+  
+  .row.error-row { border-left: 3px solid var(--err); }
+  .row.warning-row { border-left: 3px solid var(--warn); }
+  
+  footer {
+    flex: 0 0 auto;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    padding: 8px 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+    user-select: none;
+  }
+  
+  footer .stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  footer .stat .v {
+    color: var(--fg);
+    font-weight: 600;
+    background: rgba(255,255,255,0.04);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  
+  .hint {
+    color: var(--muted);
+    padding: 48px 20px;
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <h1>ImpressionistLLM <span style="font-weight: 300; opacity: 0.7;">Debug Console</span></h1>
+  </div>
+  <span id="status" class="status off"><span class="status-dot"></span><span class="status-text">disabled</span></span>
+  <span class="spacer"></span>
+  <div class="actions">
+    <button id="btnEnable" class="primary">Start Capturing</button>
+    <button id="btnDisable" style="display:none">Stop Capturing</button>
+    <button id="btnClear">Clear</button>
+    <button id="btnExport">Export</button>
+  </div>
+</header>
+
+<div class="toolbar2">
+  <input id="filter" type="text" placeholder="Filter (substring match against kind or data)…" style="min-width: 320px;" />
+  <label><input type="checkbox" id="fLog" checked /> log</label>
+  <label><input type="checkbox" id="fOR" checked /> openrouter</label>
+  <label><input type="checkbox" id="fHttp" checked /> http</label>
+  <label><input type="checkbox" id="fDebug" checked /> debug</label>
+  <label><input type="checkbox" id="fOnlyErr" /> errors only</label>
+  <span class="spacer" style="flex:1"></span>
+  <label><input type="checkbox" id="autoscroll" checked /> auto-scroll</label>
+</div>
+
+<div id="list">
+  <div class="hint" id="emptyHint">
+    <div style="font-size: 24px; margin-bottom: 12px; opacity: 0.5;">⚡</div>
+    No events yet. Click <b>Start Capturing</b> to begin logging every request, response, error, and internal event.
+  </div>
+</div>
+
+<footer>
+  <div class="stat">events: <span class="v" id="cntTotal">0</span></div>
+  <div class="stat">errors: <span class="v" id="cntErr">0</span></div>
+  <div class="stat">warnings: <span class="v" id="cntWarn">0</span></div>
+  <div class="stat">retries: <span class="v" id="cntRetry">0</span></div>
+  <div class="stat">last seq: <span class="v" id="lastSeq">0</span></div>
+  <div class="stat">connection: <span class="v" id="conn">idle</span></div>
+</footer>
+
+<script>
+(function () {
+  const els = {
+    status:     document.getElementById('status'),
+    btnEnable:  document.getElementById('btnEnable'),
+    btnDisable: document.getElementById('btnDisable'),
+    btnClear:   document.getElementById('btnClear'),
+    btnExport:  document.getElementById('btnExport'),
+    list:       document.getElementById('list'),
+    empty:      document.getElementById('emptyHint'),
+    filter:     document.getElementById('filter'),
+    fLog:       document.getElementById('fLog'),
+    fOR:        document.getElementById('fOR'),
+    fHttp:      document.getElementById('fHttp'),
+    fDebug:     document.getElementById('fDebug'),
+    fOnlyErr:   document.getElementById('fOnlyErr'),
+    autoscroll: document.getElementById('autoscroll'),
+    cntTotal:   document.getElementById('cntTotal'),
+    cntErr:     document.getElementById('cntErr'),
+    cntWarn:    document.getElementById('cntWarn'),
+    cntRetry:   document.getElementById('cntRetry'),
+    lastSeq:    document.getElementById('lastSeq'),
+    conn:       document.getElementById('conn'),
+  };
+
+  const state = {
+    events: [],     // all events as received
+    lastSeq: 0,
+    es: null,
+    enabled: false,
+  };
+
+  function fmtTs(ts) {
+    const d = new Date(ts * 1000);
+    const pad = n => String(n).padStart(2, '0');
+    return pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
+         + '.' + String(d.getMilliseconds()).padStart(3, '0');
+  }
+
+  function categoryOf(kind) {
+    if (kind.startsWith('log.')) return 'log';
+    if (kind.startsWith('openrouter.')) return 'openrouter';
+    if (kind.startsWith('http.')) return 'http';
+    if (kind.startsWith('debug.')) return 'debug';
+    return 'other';
+  }
+
+  function summarize(ev) {
+    const d = ev.data || {};
+    const k = ev.kind;
+    if (k === 'openrouter.request') {
+      return (d.transport || '') + ' → ' + (d.model || '?')
+        + (d.stream ? ' [stream]' : '')
+        + ' • ' + (d.messages_count || 0) + ' msg'
+        + ' • attempt ' + (d.attempt || 1)
+        + ' • t/o ' + (d.timeout_ms || '?') + 'ms';
+    }
+    if (k === 'openrouter.response') {
+      return (d.transport || '') + ' ← ' + (d.model || '?')
+        + (d.http_status ? ' • HTTP ' + d.http_status : '')
+        + (d.finish_reason ? ' • finish=' + d.finish_reason : '')
+        + (d.has_content === false ? ' • EMPTY' : '');
+    }
+    if (k === 'openrouter.retry') {
+      return 'HTTP ' + (d.http_status || '?')
+        + ' on ' + (d.model || '?')
+        + ' • retry after ' + (d.delay_seconds || '?') + 's';
+    }
+    if (k === 'openrouter.error') {
+      const cat = d.error_category || 'unknown';
+      const msg = d.error_message || '';
+      return '[' + cat + '] HTTP ' + (d.http_status || '?')
+        + (d.retry_after_seconds ? ' • Retry-After=' + d.retry_after_seconds + 's' : '')
+        + ' • ' + msg.slice(0, 200);
+    }
+    if (k === 'openrouter.transport_error') {
+      return (d.exception_type || 'error') + ': ' + (d.exception_message || '');
+    }
+    if (k.startsWith('log.')) {
+      return (d.logger || '') + ' | ' + (d.message || '');
+    }
+    if (k === 'http.get_failed' || k === 'http.post_failed') {
+      return (d.path || '') + ' • ' + (d.exception_type || '') + ': ' + (d.exception_message || '');
+    }
+    if (k === 'debug.enabled' || k === 'debug.disabled') {
+      return '';
+    }
+    // Fallback: short JSON
+    try {
+      const j = JSON.stringify(d);
+      return j.length > 220 ? j.slice(0, 220) + '…' : j;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function shouldShow(ev) {
+    const cat = categoryOf(ev.kind);
+    if (cat === 'log' && !els.fLog.checked) return false;
+    if (cat === 'openrouter' && !els.fOR.checked) return false;
+    if (cat === 'http' && !els.fHttp.checked) return false;
+    if (cat === 'debug' && !els.fDebug.checked) return false;
+    if (els.fOnlyErr.checked && ev.level !== 'error' && ev.level !== 'warning') return false;
+    const f = els.filter.value.trim().toLowerCase();
+    if (f) {
+      const hay = (ev.kind + ' ' + JSON.stringify(ev.data || {})).toLowerCase();
+      if (hay.indexOf(f) < 0) return false;
+    }
+    return true;
+  }
+
+  // Safe and fast colorizer helper with strict HTML escaping
+  function syntaxHighlight(json) {
+    if (typeof json !== 'string') {
+      json = JSON.stringify(json, null, 2);
+    }
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, function (match) {
+      let cls = 'number';
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = 'key';
+        } else {
+          cls = 'string';
+        }
+      } else if (/true|false/.test(match)) {
+        cls = 'boolean';
+      } else if (/null/.test(match)) {
+        cls = 'null';
+      }
+      return '<span class="json-' + cls + '">' + match + '</span>';
+    });
+  }
+
+  function renderEvent(ev) {
+    if (!shouldShow(ev)) return null;
+    const row = document.createElement('div');
+    row.className = 'row level-' + (ev.level || 'info');
+    if (ev.level === 'error') row.classList.add('error-row');
+    else if (ev.level === 'warning') row.classList.add('warning-row');
+
+    const head = document.createElement('div');
+    head.innerHTML = '<span class="caret">▶</span>'
+                   + '<span class="ts">' + fmtTs(ev.ts) + '</span> '
+                   + '<span class="kind">' + ev.kind + '</span>'
+                   + '<span class="summary">' + escapeHtml(summarize(ev)) + '</span>';
+
+    const json = document.createElement('div');
+    json.className = 'json';
+    try {
+      json.innerHTML = syntaxHighlight(ev.data);
+    } catch (e) {
+      json.textContent = String(ev.data);
+    }
+
+    row.appendChild(head);
+    row.appendChild(json);
+    row.addEventListener('click', () => row.classList.toggle('expanded'));
+    return row;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function appendEvent(ev) {
+    // Client-side deduplication against duplicate events from SSE reconnects
+    if (ev.seq && state.events.some(x => x.seq === ev.seq)) {
+      return;
+    }
+    state.events.push(ev);
+    state.lastSeq = Math.max(state.lastSeq, ev.seq || 0);
+    if (els.empty.parentNode) els.empty.parentNode.removeChild(els.empty);
+    const row = renderEvent(ev);
+    if (row) {
+      els.list.appendChild(row);
+      if (els.autoscroll.checked) {
+        els.list.scrollTop = els.list.scrollHeight;
+      }
+    }
+    updateStats();
+  }
+
+  function rerender() {
+    els.list.innerHTML = '';
+    let shown = 0;
+    for (const ev of state.events) {
+      const row = renderEvent(ev);
+      if (row) { els.list.appendChild(row); shown++; }
+    }
+    if (shown === 0) {
+      const h = document.createElement('div');
+      h.className = 'hint';
+      h.textContent = 'No events match the current filters.';
+      els.list.appendChild(h);
+    }
+    if (els.autoscroll.checked) els.list.scrollTop = els.list.scrollHeight;
+  }
+
+  function updateStats() {
+    els.cntTotal.textContent = state.events.length;
+    let err = 0, warn = 0, retry = 0;
+    for (const ev of state.events) {
+      if (ev.level === 'error') err++;
+      else if (ev.level === 'warning') warn++;
+      if (ev.kind === 'openrouter.retry') retry++;
+    }
+    els.cntErr.textContent = err;
+    els.cntWarn.textContent = warn;
+    els.cntRetry.textContent = retry;
+    els.lastSeq.textContent = state.lastSeq;
+  }
+
+  function updateCaptureStatus(enabled) {
+    state.enabled = enabled;
+    const textEl = els.status.querySelector('.status-text');
+    if (enabled) {
+      els.status.className = 'status on';
+      if (textEl) textEl.textContent = 'capturing';
+      els.btnEnable.style.display = 'none';
+      els.btnDisable.style.display = '';
+    } else {
+      els.status.className = 'status off';
+      if (textEl) textEl.textContent = 'disabled';
+      els.btnEnable.style.display = '';
+      els.btnDisable.style.display = 'none';
+    }
+  }
+
+  // ---- SSE connection ----
+  function connectSSE() {
+    closeSSE();
+    els.conn.textContent = 'connecting…';
+    try {
+      const url = '/api/debug/events?since=' + encodeURIComponent(state.lastSeq);
+      const es = new EventSource(url);
+      es.onopen = () => { els.conn.textContent = 'streaming'; };
+      es.onmessage = (e) => {
+        try {
+          const ev = JSON.parse(e.data);
+          appendEvent(ev);
+          if (ev.kind === 'debug.enabled') {
+            updateCaptureStatus(true);
+          } else if (ev.kind === 'debug.disabled') {
+            updateCaptureStatus(false);
+          }
+        } catch (err) { /* ignore */ }
+      };
+      es.onerror = () => {
+        els.conn.textContent = 'reconnecting…';
+        setTimeout(connectSSE, 1500);
+      };
+      state.es = es;
+    } catch (e) {
+      els.conn.textContent = 'failed: ' + e.message;
+      setTimeout(connectSSE, 3000);
+    }
+  }
+
+  function closeSSE() {
+    if (state.es) {
+      try { state.es.close(); } catch (e) {}
+      state.es = null;
+    }
+  }
+
+  // ---- Controls ----
+  els.btnEnable.addEventListener('click', async () => {
+    try {
+      await fetch('/api/debug/enable', { method: 'POST' });
+    } catch (e) {}
+  });
+  els.btnDisable.addEventListener('click', async () => {
+    try {
+      await fetch('/api/debug/disable', { method: 'POST' });
+    } catch (e) {}
+  });
+  els.btnClear.addEventListener('click', async () => {
+    state.events = [];
+    state.lastSeq = 0;
+    els.list.innerHTML = '';
+    updateStats();
+    try {
+      await fetch('/api/debug/clear', { method: 'POST' });
+    } catch (e) {}
+  });
+  els.btnExport.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state.events, null, 2)],
+                          { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
+    a.href = url;
+    a.download = 'impressionistllm-debug-' + ts + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  // Re-render when filters change
+  for (const id of ['filter','fLog','fOR','fHttp','fDebug','fOnlyErr']) {
+    document.getElementById(id).addEventListener('input', rerender);
+    document.getElementById(id).addEventListener('change', rerender);
+  }
+
+  // Initial snapshot then live stream
+  (async function init() {
+    try {
+      const r = await fetch('/api/debug/snapshot?since=0&limit=2000');
+      const j = await r.json();
+      updateCaptureStatus(!!j.enabled);
+      for (const ev of (j.events || [])) appendEvent(ev);
+      // Auto-enable on open so the user immediately gets data.
+      if (!state.enabled) {
+        try { await fetch('/api/debug/enable', { method: 'POST' }); } catch (e) {}
+      }
+    } catch (e) {
+      console.warn('snapshot failed', e);
+    }
+    connectSSE();
+  })();
+
+  window.addEventListener('beforeunload', closeSSE);
+})();
+</script>
+</body>
+</html>

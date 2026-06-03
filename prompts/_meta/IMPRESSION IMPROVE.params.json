@@ -1,0 +1,13 @@
+{
+  "mode": "user",
+  "user_parameters": {
+    "max_tokens": 1024,
+    "reasoning": {
+      "enabled": true,
+      "effort": "low",
+      "exclude": true
+    },
+    "temperature": 1,
+    "top_p": 1
+  }
+}

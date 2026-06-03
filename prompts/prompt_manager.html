@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>ImpressionistLLM - Prompt Manager</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/_design-system-core.css?v=3" />
+        <link rel="stylesheet" href="/_prompt_manager-core.css?v=3">
+    </head>
+    <body>
+        <div class="status-message" id="statusMessage" role="alert" aria-live="polite"></div>
+
+        <div class="container">
+            <main class="main-content" role="main">
+                <aside class="pm-sidebar" role="complementary" aria-label="Prompt List">
+                    <button type="button" class="new-prompt-btn" id="newPromptBtn" aria-label="Create New Prompt">
+                        + New Prompt
+                    </button>
+                    <ul class="prompt-list" id="promptList" aria-live="polite">
+                        <li class="prompt-list-placeholder">
+                            Loading...
+                        </li>
+                    </ul>
+                </aside>
+                <section class="editor" id="editor" role="region" aria-label="Prompt Editor">
+                    <div class="editor-empty">
+                        <h2>Welcome to Prompt Manager</h2>
+                        <p>Select a prompt to edit or create a new one</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script src="/prompt_utils.js?v=3"></script>
+        <script src="/_prompt_manager_core.js?v=3"></script>
+    </body>
+</html>

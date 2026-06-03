@@ -1,0 +1,13 @@
+openai/gpt-5.5
+
+Combine the findings and impressions section into one FINDINGS/IMPRESSION section.
+
+It should be slightly more concise and answer the clinical question/importance more directly than a Findings section alone (like an impression) but it will summarize all incidentals and or pert negatives nicely as a final impression point (unlike impressions)
+
+1st impression point is the most imporatnt
+Second the second most
+Summarize it nice so it DIRECTLY explains and details what the referring physician wants to know. Don't use "The" or "There is" to begin sentences.
+
+Try and do 1-5 points only max. And be efficient with words.
+
+Output plain text only. No Markdown, no bolding, no asterisks, and no headings unless explicitly requested. Never begin any sentence with "The" or "There is".

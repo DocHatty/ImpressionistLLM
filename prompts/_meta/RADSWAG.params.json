@@ -1,0 +1,14 @@
+{
+  "mode": "user",
+  "user_parameters": {
+    "max_tokens": 1024,
+    "reasoning": {
+      "enabled": false,
+      "effort": "medium",
+      "exclude": false
+    },
+    "tool_choice": "auto",
+    "tools": [],
+    "seed": 0
+  }
+}

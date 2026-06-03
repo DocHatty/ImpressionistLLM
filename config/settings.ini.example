@@ -1,0 +1,89 @@
+; ImpressionistLLM Configuration File
+; This is a template configuration file. Copy to settings.ini and customize.
+;
+; API Key Priority:
+; 1. Environment variable: OPENROUTER_API_KEY
+; 2. This file: [API] APIKey=...
+;
+; Get your API key from: https://openrouter.ai/keys
+
+[API]
+; Your OpenRouter API key (or set OPENROUTER_API_KEY environment variable)
+APIKey=YOUR_API_KEY_HERE
+; Default model for LLM requests
+DefaultModel=openai/gpt-5.5
+
+[OpenRouter]
+; Provider routing defaults for clinical / radiology use. These ship with the
+; strictest privacy posture by default - relax them only if you accept the
+; tradeoffs.
+;
+; ProviderDataCollection=deny  : refuse providers that may train on or store prompts.
+; ProviderZDR=true             : Zero Data Retention only. Stricter; can reduce
+;                                 model availability. Set to false if you need
+;                                 broader provider access for non-PHI work.
+; AllowFallbacks=false         : do NOT silently fall back to less-compliant
+;                                 providers when the preferred one is busy. The
+;                                 request fails instead. Set to true to allow
+;                                 fallbacks (default OpenRouter behavior).
+; ProviderSort                 : optional. Blank = OpenRouter's default routing.
+;                                 Use "price", "throughput", or "latency" to
+;                                 force a sort order.
+ProviderDataCollection=deny
+ProviderZDR=false
+AllowFallbacks=true
+ProviderSort=
+
+[Application]
+; Maximum edge length for screenshots (pixels)
+ScreenshotMaxEdge=2048
+; Enable debug mode
+DebugMode=false
+; Maximum clipboard size (bytes)
+MaxClipboardSize=102400
+; Clipboard operation timeout (milliseconds)
+ClipboardTimeout=1500
+; Delay before restoring the previous clipboard after paste (milliseconds)
+ClipboardRestoreDelayMs=120
+
+[Server]
+; Local HTTP server port
+Port=58080
+; Local HTTP server host
+Host=127.0.0.1
+; Enable local server
+Enabled=true
+
+[Vision]
+; Vision model (defaults to API.DefaultModel if empty)
+Model=
+
+[ScreenshotImagePrep]
+; Automatic local layout preprocessing for screenshot vision calls.
+; Keeps originals, then adds conservative panel/zoom crops when confident.
+Enabled=true
+Debug=false
+SaveContactSheet=true
+SaveDerivedImages=false
+GenerateZooms=true
+MaxOutputImages=8
+MaxRequestBytes=9000000
+MaxEdge=1600
+MinPanelAreaRatio=0.045
+PanelConfidenceThreshold=0.70
+CropPaddingPercent=4
+MaxDerivedPerOriginal=4
+DebugRetentionHours=48
+
+[Logging]
+; Enable file logging
+Enabled=false
+; Log directory
+LogDirectory=logs
+
+[Paths]
+; Paths are relative to the application directory unless absolute
+Prompts=prompts
+Logs=logs
+Temp=temp
+Processors=prompts/processors

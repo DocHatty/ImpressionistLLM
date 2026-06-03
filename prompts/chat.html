@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImpressionistLLM Chat</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/_design-system-core.css">
+    <link rel="stylesheet" href="/chat.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-title-group">
+            <span class="header-title">ImpressionistLLM</span>
+            <span class="header-model" id="currentModel"></span>
+        </div>
+        <div class="header-controls">
+            <button class="btn-icon" id="btnAttach" title="Attach" aria-label="Attach files">Attach</button>
+            <button class="btn-icon" id="btnSettings" title="Settings" aria-label="Open settings" aria-expanded="false" aria-controls="settingsPanel">Settings</button>
+            <button class="btn-icon" id="btnClear" title="Clear" aria-label="Clear chat">Clear</button>
+        </div>
+    </div>
+    <div class="settings-panel" id="settingsPanel" role="dialog" aria-label="Chat settings">
+        <div class="settings-row">
+            <label for="modelSelect">Model</label>
+            <select id="modelSelect"><option value="">Loading...</option></select>
+        </div>
+        <div class="settings-row">
+            <label><input type="checkbox" id="plainText" checked> Plain text output (no markdown)</label>
+        </div>
+        <div class="settings-row">
+            <label for="temperature">Temperature: <span id="tempValue">0.7</span></label>
+            <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+        </div>
+        <div class="settings-row">
+            <label for="maxTokens">Max Tokens</label>
+            <input type="number" id="maxTokens" value="4096" min="256" max="16384" step="256">
+        </div>
+        <div id="reasoningControls">
+            <div class="settings-row">
+                <label for="reasoningEnabled">Reasoning</label>
+                <select id="reasoningEnabled">
+                    <option value="false" selected>Off</option>
+                    <option value="true">On</option>
+                </select>
+            </div>
+            <div class="settings-row">
+                <label for="reasoningEffort">Thinking Effort</label>
+                <select id="reasoningEffort">
+                    <option value="none">None</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                    <option value="xhigh">XHigh</option>
+                </select>
+            </div>
+            <div class="settings-row">
+                <label for="reasoningExclude">Exclude reasoning from response</label>
+                <select id="reasoningExclude">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="chat-container" id="chatContainer">
+        <div class="empty-state" id="emptyState">
+            <h2>Ready</h2>
+            <p>Type a message below</p>
+        </div>
+    </div>
+    <div class="input-area">
+        <div class="input-wrapper">
+            <textarea class="input-box" id="inputBox" aria-label="Message" placeholder="Type message... (Shift+Enter for newline). Paste/drag images, attach text files." rows="1"></textarea>
+            <button class="btn-send" id="btnSend">Send</button>
+        </div>
+        <input type="file" id="fileInput" class="hidden-file-input" multiple accept="image/*,text/*,.txt,.md,.json,.csv,.log">
+        <div class="attachments" id="attachments"></div>
+        <div class="status" id="status" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <script src="/prompt_utils.js"></script>
+    <script src="/_chat_core.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,16 @@
+openai/gpt-5.5
+
+Just list all the findings briefly. Try and summarize them, as opposed to just re-stating the findings section verbatim, with important pertinants included as clarifiers. 
+
+Don't preface the section "FINDINGS". 
+
+Separate listed items with a dash (-) at the beginning of every new element.
+
+Try and stack/lump findings from similar sections/systems. Limit white space. Tight compact.
+
+Don't include normal findings (NEGATIVE STATEMENTS ARE UNNECSSARY - ONLY POSITIVE/PATHOLOGIC OR ABNORMAL VARIANT FINDINGS NEED TO BE DISCUSSED), but you can include pertinent negatives if they are directly specifically related to clarifying a specific abnormal finding. Also include any clarifying pertinent detail elements (e.g., "very," "mild," sizes, or comparisons to how this was compared to priors).
+
+At the very end, summarize what the exam found with a no-BS, smart summary (not listing the findings but more like giving one major impression as to what exactly is going on).
+
+OTHER RULES:
+If the previous report was from Jean Dykstra (AND ONLY IN THIS SPECIFIC SITUATION) < Then for her we are going to expect a lot of overcalling, and a lot of talk about incidentals. If its her signature in the report you are summarizing, try and tone down her hedgy bullshit and summarize long chains of descriptors if they are overbearing.

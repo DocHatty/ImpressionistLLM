@@ -1,0 +1,3 @@
+"""
+OpenRouter modules package initialization.
+"""

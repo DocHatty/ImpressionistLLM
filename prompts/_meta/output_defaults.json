@@ -1,0 +1,9 @@
+{
+  "association": { "useEditWindow": true, "useChatSession": false },
+  "pirads": { "useEditWindow": true, "useChatSession": false },
+  "differential": { "useEditWindow": false, "useChatSession": true },
+  "staging": { "useEditWindow": false, "useChatSession": true },
+  "walkthrough": { "useEditWindow": false, "useChatSession": true },
+  "whats-the-deal": { "useEditWindow": false, "useChatSession": true },
+  "whats the deal": { "useEditWindow": false, "useChatSession": true }
+}

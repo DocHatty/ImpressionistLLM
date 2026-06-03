@@ -1,0 +1,18 @@
+{
+  "mode": "user",
+  "user_parameters": {
+    "max_tokens": 1536,
+    "reasoning": {
+      "enabled": true,
+      "effort": "high",
+      "exclude": true
+    },
+    "stop": [],
+    "structured_outputs": true,
+    "temperature": 1,
+    "tool_choice": "auto",
+    "tools": [],
+    "top_k": 0,
+    "top_p": 1
+  }
+}

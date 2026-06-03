@@ -1,0 +1,105 @@
+﻿<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Context Manager</title>
+        <link rel="stylesheet" href="/_design-system-core.css" />
+        
+    <link rel="stylesheet" href="/context_manager.css">
+    </head>
+    <body>
+        <div class="app">
+            <header class="header">
+                <h1>Context Manager</h1>
+                <div class="header-actions">
+                    <button
+                        id="clearAllBtn"
+                        class="btn btn-secondary btn-sm"
+                        type="button"
+                    >
+                        Clear All
+                    </button>
+                    <button
+                        id="applyCloseBtn"
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                    >
+                        Apply & Close
+                    </button>
+                </div>
+            </header>
+
+            <main class="main">
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <h2>Snippets</h2>
+                    </div>
+                    <div class="list-container" id="snippetList">
+                        <div class="list-empty">
+                            Loading...
+                        </div>
+                    </div>
+                    <div class="sidebar-footer">
+                        <button
+                            id="newSnippetBtn"
+                            class="btn btn-secondary sidebar-action"
+                            type="button"
+                        >
+                            + New Snippet
+                        </button>
+                    </div>
+                </aside>
+
+                <section class="editor" id="editorSection">
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-state-icon">[ ]</div>
+                        <div class="empty-state-text">No snippet selected</div>
+                        <div class="empty-state-hint">
+                            Create a new snippet or select one from the list
+                        </div>
+                    </div>
+
+                    <div id="editorContent">
+                        <div class="editor-header">
+                            <input
+                                type="text"
+                                class="editor-title-input"
+                                id="snippetName"
+                                placeholder="Snippet name..."
+                            />
+                        </div>
+                        <div class="editor-content">
+                            <textarea
+                                class="textarea"
+                                id="snippetContent"
+                                placeholder="Enter context content..."
+                            ></textarea>
+                        </div>
+                        <div class="editor-footer">
+                            <span class="char-count" id="charCount"
+                                >0 characters</span
+                            >
+                            <div class="editor-footer-actions">
+                                <button
+                                    id="deleteSnippetBtn"
+                                    class="btn btn-danger btn-sm"
+                                    type="button"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <div class="toast" id="toast"></div>
+
+            <script src="/prompt_utils.js"></script>
+            <script src="/context_manager.js"></script>
+
+    </body>
+</html>
+

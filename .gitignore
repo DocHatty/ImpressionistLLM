@@ -1,0 +1,35 @@
+# ===== Secrets — NEVER commit =====
+# .env holds your OpenRouter key
+.env
+# config/settings.ini contains your live OpenRouter API key
+config/settings.ini
+# private code-signing materials
+cert/*.key
+cert/*.p12
+
+# ===== Generated / runtime =====
+# Python virtualenv, recreated on first launch
+lib/core/.venv/
+**/__pycache__/
+*.pyc
+lib/core/vendor_site_packages/
+lib/core/python/
+
+# ===== Build artifacts =====
+# compiled bundle, produced by build_app.sh
+ImpressionistLLM.app/
+# bare compiled binary
+/ImpressionistLLM
+
+# ===== Logs & scratch =====
+logs/*
+!logs/.gitkeep
+temp/*
+!temp/.gitkeep
+
+# ===== macOS cruft =====
+.DS_Store
+**/.DS_Store
+
+# ===== Claude Code local harness config =====
+.claude/

@@ -1,0 +1,13 @@
+[ req ]
+default_bits = 2048
+default_md = sha256
+prompt = no
+distinguished_name = dn
+x509_extensions = v3_req
+
+[ dn ]
+CN = ImpressionistLLM Local Development
+
+[ v3_req ]
+keyUsage = critical, digitalSignature
+extendedKeyUsage = critical, codeSigning

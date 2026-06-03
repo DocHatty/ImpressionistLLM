@@ -1,0 +1,53 @@
+{
+  "activeLabel" : "OCR",
+  "actions" : [
+    {
+      "hotkey" : "1",
+      "prompt" : "OCR the screenshot only, whatever text is present reproduce it as output and nothing else.\r\n\r\nIF the user provides text context with the image as input, then he typically wants you to insert what you OCR appropriately where it would fit in that text input. So for instance if he had context of Comparison Exams: None, and OCRD a list of few prior exams, then change that to list the dates appropriately.",
+      "model" : "google\/gemini-3.5-flash",
+      "label" : "OCR"
+    },
+    {
+      "hotkey" : "2",
+      "prompt" : "Describe exactly what is seen in the provided image as it would be described in a radiology report. Focus only on the depicted imaging findings or normal appearance. Use concise radiology-style language and objective descriptive terminology. If the user provides guidance, a template, or asks for a specific structure, follow that. Otherwise, sound exactly like a real radiology report description. Do not add markdown, bullet points, bolding, headings, or conversational commentary. Do not begin any sentence with the word The or the phrase There is.",
+      "model" : "google\/gemini-3.5-flash",
+      "label" : "DESCRIBE"
+    },
+    {
+      "hotkey" : "S",
+      "prompt" : "User will upload multiple images, your job is to process all of them (with grounding of an elite specialist radiology master interpreter), but then individually crop and cut then and zoom and preocess them individually appropriately, so you get a full picture\r\n\r\nGuardrailes are not to proceed until you confirm u have images, you've assessed normal, and you've assessed abnormal. Use chain of thought and sequential thinking. Do all of this internally.\r\n\r\nThen you fill in the report according to what you found\r\n\r\nUse this template \r\n\r\nSTUDY: XR Spine Thoracic 3 View 72072.\n\nREASON FOR EXAM: Pain.\n\nCOMPARISON: None.\n\nFINDINGS\/IMPRESSION:\nNormal thoracic spinal alignment.\n\nRelative intact vertebral body statures, allowing for radiographic limitation and osseous overlap.\n\nNo aggressive degenerative changes appreciated.\n\n-----\n\nClinical correlation recommended; consider more advanced imaging if symptoms persist.\r\n\r\nIf dynamic images were not provided then do not discuss dynamic exam. \r\n\r\nyou only have to include the FINDINGS\/IMPRESSION part not the other sections (study, reason for exam etc)\r\n\r\nBUT Make the wording much more skilled efficient no BS elite radiologist < Also you must adjust the wording to accound for any findings you see in the images. Image findings take precidence.",
+      "model" : "openai\/gpt-5.5-image-2",
+      "label" : "SPINE"
+    },
+    {
+      "hotkey" : "4",
+      "prompt" : "Interpret (from a reporting radiologist perpective) the screenshot only, reproduce radiology description as output and nothing else.\r\n\r\nUser will also provide the template for what he wants you to do, inject the findings from what you ocr (or from the radiology images provided and you interpret) into the appropriate sections into the template the user provides.\r\n\r\nIf user provides template, fill in the details. Just change what is pertinant from the OCR.\r\n\r\nDo not begin sentences with \"The\" or \"There is\".",
+      "model" : "openai\/gpt-5.5-image-2",
+      "label" : "INJECT"
+    },
+    {
+      "hotkey" : "V",
+      "prompt" : "Make sure you describe what the image shows, make sure you are grounded in experise at the level of Atlas of Normal Roentgen Variants That May Simulate Diseas by Keats. True radiology expertise.",
+      "model" : "openai\/gpt-5.5-image-2",
+      "label" : "Variants"
+    },
+    {
+      "hotkey" : "C",
+      "prompt" : "Describe as if it is a radiology report the findings of two images and compare across time. The current (most recent) image will be marked with a cicrle. The prior (previous scan image) will have none.\r\nDon't begin sentences with \"The\" or \"There is\"\r\n\r\nDont include description of the circle (its just for marking for you). Use language as if its a expert radiologist describing it in a report body.\r\n\r\nUser may include descriptions in the black (not in the imaging part) to help guide your interpretation and grounding (anatomically and such)\r\n\r\nRound to nearest 10th.",
+      "model" : "openai\/gpt-5.5",
+      "label" : "COMPARE"
+    },
+    {
+      "hotkey" : "3",
+      "prompt" : "Describe exactly what anatomy is being pinpointed by arrow. Use all resources available (including external) to make sure you are accurate and precise. Also reprocess the image by zooming in and utilizing multiple processing rounds. Dont use special characters as output such as **",
+      "model" : "openai\/gpt-5.5",
+      "label" : "Anatomy"
+    },
+    {
+      "hotkey" : "6",
+      "prompt" : "Interpret (from a reporting radiologist perpective) the screenshot only, reproduce radiology description as output and nothing else.\r\n\r\nOnly describe the abnormal findings, not the normal ones. Use radiology language. Make sure you comment on evereything abnormal that a experiened radiologist would. \r\n\r\nDo not begin sentences with \"The\" or \"There is\".",
+      "model" : "openai\/gpt-5.5-image-2",
+      "label" : "LIST"
+    }
+  ]
+}
