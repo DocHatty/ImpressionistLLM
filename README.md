@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="LoadingScreen.png" alt="ImpressionistLLM" width="280" />
+<img src="docs/assets/hero.png" alt="ImpressionistLLM" width="560" />
 
 # ImpressionistLLM
 
