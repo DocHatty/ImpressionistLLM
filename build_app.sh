@@ -22,25 +22,25 @@ mkdir -p "${RESOURCES_DIR}"
 # 3. Compile Swift source files
 echo "Compiling Swift source files..."
 swiftc -O -o "${MACOS_DIR}/${APP_NAME}" \
-    main.swift \
-    AppDelegate.swift \
-    AppState.swift \
-    ClipboardHelper.swift \
-    HotkeyManager.swift \
-    PythonServerManager.swift \
-    FloatingPromptMenu.swift \
-    CaptureOverlay.swift \
-    ProcessingHUD.swift \
-    OutputEditor.swift \
-    SplashScreen.swift \
-    ScreenshotActionEditor.swift \
-    HotkeySettings.swift \
-    HotkeySettingsView.swift \
-    BrowserManager.swift \
-    LLMService.swift \
-    MouseMonitor.swift \
-    StatusMenuManager.swift \
-    Theme.swift \
+    Sources/App/main.swift \
+    Sources/App/AppDelegate.swift \
+    Sources/App/AppState.swift \
+    Sources/App/Theme.swift \
+    Sources/Services/ClipboardHelper.swift \
+    Sources/Services/HotkeyManager.swift \
+    Sources/Services/PythonServerManager.swift \
+    Sources/Services/HotkeySettings.swift \
+    Sources/Services/BrowserManager.swift \
+    Sources/Services/LLMService.swift \
+    Sources/Services/MouseMonitor.swift \
+    Sources/UI/FloatingPromptMenu.swift \
+    Sources/UI/CaptureOverlay.swift \
+    Sources/UI/ProcessingHUD.swift \
+    Sources/UI/OutputEditor.swift \
+    Sources/UI/SplashScreen.swift \
+    Sources/UI/ScreenshotActionEditor.swift \
+    Sources/UI/HotkeySettingsView.swift \
+    Sources/UI/StatusMenuManager.swift \
     -framework AppKit \
     -framework Carbon \
     -framework SwiftUI \

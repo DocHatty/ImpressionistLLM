@@ -142,7 +142,10 @@ Drop in a file, assign a hotkey, and it's live. The bundled prompts lean toward 
 
 ```text
 .
-├── *.swift          # Native macOS app: menu bar, hotkeys, overlays, HUD
+├── Sources/         # Native macOS app
+│   ├── App/         #   lifecycle, shared state, theming
+│   ├── Services/    #   hotkeys, clipboard, Python daemon, OpenRouter flow
+│   └── UI/          #   menu bar, floating menu, overlays, HUD, editors
 ├── build_app.sh     # Compiles, bundles, and code-signs ImpressionistLLM.app
 ├── config/          # settings.ini.example + hotkey bindings (your key stays local)
 ├── lib/core/        # Local Python server + OpenRouter client
@@ -150,3 +153,5 @@ Drop in a file, assign a hotkey, and it's live. The bundled prompts lean toward 
 ├── scripts/         # Model probes and validation helpers
 └── docs/            # Architecture, operations, structure
 ```
+
+> The compiled `.app` runs from the repo root and reads `config/`, `lib/core/`, `prompts/`, and `LoadingScreen.png` as siblings — those stay put by design.
