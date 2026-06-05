@@ -26,7 +26,7 @@ Select text anywhere &rarr; press a hotkey &rarr; the result is pasted back in p
 
 <hr/>
 
-ImpressionistLLM is a native macOS menu&#8209;bar app that turns **any** application into an AI&#8209;powered one. It runs at the OS level (global hotkeys, the clipboard, and the accessibility API), so it works inside your EHR, editor, inbox, browser, or terminal without a single plugin. A tiny local Python server proxies your requests to [OpenRouter](https://openrouter.ai), giving you GPT, Claude, Gemini, and hundreds of other models from one keystroke.
+A native macOS menu&#8209;bar app that turns **any** application into an AI&#8209;powered one. It runs at the OS level (global hotkeys, the clipboard, and the accessibility API), so it works inside your EHR, editor, inbox, browser, or terminal without a single plugin. A tiny local Python server proxies your requests to [OpenRouter](https://openrouter.ai), giving you GPT, Claude, Gemini, and hundreds of other models from one keystroke.
 
 ## Why invisible?
 
