@@ -2,7 +2,7 @@
 
 <img src="docs/assets/hero.png" alt="ImpressionistLLM" width="520" />
 
-# ImpressionistLLM (aka ImpressionismLLM)
+# AKA ImpressionistLLM
 
 ### An invisible AI layer that sits on top of every app on your Mac
 
