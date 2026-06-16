@@ -6,7 +6,7 @@
 
 ### An invisible AI layer that sits on top of every app on your Mac
 
-Select text anywhere &rarr; press a hotkey &rarr; the result is pasted back in place.
+Your cursor is now an agent, it can now interact with anything, anywhere.
 <br/>No tab switching. No copy paste dance. The model comes to you.
 
 <br/>
