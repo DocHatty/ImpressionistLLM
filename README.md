@@ -6,7 +6,7 @@
 
 ### An invisible AI layer that sits on top of every app on your Mac
 
-Your cursor is now an agent, it can now interact with anything, anywhere.
+Your cursor is now an agent, you can interact with anything, anywhere, ever present ai contexual awareness.
 <br/>No tab switching. No copy paste dance. The model comes to you.
 
 <br/>
