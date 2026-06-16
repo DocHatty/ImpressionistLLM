@@ -4,10 +4,13 @@
 
 # ImpressionismLLM/ImpressionistLLM
 
-### An invisible AI layer that sits on top of every app on your Mac
+**Your cursor is now an agent. AI lives at your fingertip, invisible, everywhere, always on.**
 
-Your cursor is now an agent, you can interact with anything, anywhere, ever present ai contexual awareness.
-<br/>No tab switching. No copy paste dance. The model comes to you.
+Select text in any app. Hit one key. The answer lands right where you are.
+
+No tabs. No copy-paste gymnastics. No new windows. No plugins. No lock-in.
+
+The model comes to you, not the other way around.
 
 <br/>
 
