@@ -6,7 +6,7 @@
 
 **Your cursor is now THE agent. AI lives at your fingertip, invisible, everywhere, always on.**
 
-Select text in any app. Hit one key. The answer lands right where you are.
+Highlight or select any content in any app. Hit one key. The answer lands right where you are, without you having to ask the question.
 
 No tabs. No copy-paste gymnastics. No new windows. No plugins. No lock-in.
 
