@@ -4,7 +4,7 @@
 
 # ImpressionismLLM/ImpressionistLLM
 
-**Your cursor is now an agent. AI lives at your fingertip, invisible, everywhere, always on.**
+**Your cursor is now THE agent. AI lives at your fingertip, invisible, everywhere, always on.**
 
 Select text in any app. Hit one key. The answer lands right where you are.
 
